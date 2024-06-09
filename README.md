@@ -1,7 +1,5 @@
 # Vignette-Wizard
 
-[Uploading icon.ico…]()
-
 This python application is used to be given a folder path containing one or more images, modify any given settings including colour of the vignette, then press the button. The program will add a vignette to each images and save a copy in a new folder in the given original folder path. Tested out on images about 1.7 - 2 MB 2000x2000 size, it's taking any time from 0.4 - 0.8 seconds to process each image.
 
 ## Pyinstaller
