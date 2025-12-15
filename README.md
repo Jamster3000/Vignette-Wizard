@@ -5,7 +5,7 @@ This python application is used to be given a folder path containing one or more
 ## Pyinstaller
 I have used the following cmd command to build the exe application
 
-```pyinstaller --clean -y --name "Vignette Wizard" --windowed --add-data "C:\Users\ThinkPad\AppData\Local\Programs\Python\Python311\Lib\site-packages\customtkinter;customtkinter/" --onefile -i "icon.ico" wizard.py```
+```pyinstaller --clean -y --name "Vignette Wizard" --windowed --add-data "C:\Users\[USER]\AppData\Local\Programs\Python\Python311\Lib\site-packages\customtkinter;customtkinter/" --hidden-import plyer.platforms.win.notification --add-data "icon.ico;." --add-data "icon.png;." --icon "icon.ico" --onefile wizard.pyy```
 
 ![GitHub issues](https://img.shields.io/github/issues/jamster3000/Vignette-Wizard)
 ![Last Commit](https://img.shields.io/github/last-commit/jamster3000/Vignette-Wizard)
