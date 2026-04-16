@@ -1,0 +1,204 @@
+﻿<script>
+	import "../app.css";
+	import { invoke } from "@tauri-apps/api/core";
+	import { open } from "@tauri-apps/plugin-dialog";
+	import { listen } from "@tauri-apps/api/event";
+	import ControlGroup from "$lib/ControlGroup.svelte";
+	import ColorPicker from "$lib/ColorPicker.svelte";
+	import CheckboxControl from "$lib/CheckboxControl.svelte";
+	import Button from "$lib/Button.svelte";
+	import Input from "$lib/Input.svelte";
+
+	let folderPath = $state("");
+	let stepInterval = $state(1);
+	let vignetteStrength = $state(2.5);
+	let radiusDivisor = $state(4.0);
+	let vignetteColor = $state("#000000");
+	let debugMode = $state(false);
+	let isProcessing = $state(false);
+	let progress = $state(0);
+	let progressText = $state("");
+
+	// Listen for progress events
+	listen("progress", (event) => {
+		const data = event.payload;
+		progress = data.percentage;
+		progressText = `${data.current} / ${data.total}`;
+	});
+
+	async function handleProcessImages() {
+		if (!folderPath) {
+			alert("Please select a folder first");
+			return;
+		}
+
+		isProcessing = true;
+		progress = 0;
+		progressText = "";
+
+		try {
+			const message = await invoke("process_images", {
+				settings: {
+					folder_path: folderPath,
+					step_interval: stepInterval,
+					vignette_strength: vignetteStrength,
+					radius_divisor: radiusDivisor,
+					vignette_color: vignetteColor,
+					debug_mode: debugMode
+				}
+			});
+			console.log(message);
+			alert(message);
+		} catch (error) {
+			console.error("Processing error:", error);
+			alert("Error processing images: " + error);
+		} finally {
+			isProcessing = false;
+			progress = 0;
+			progressText = "";
+		}
+	}
+
+	function handleReset() {
+		vignetteColor = "#000000";
+	}
+
+	async function handleChooseFolder() {
+		const selected = await open({
+			directory: true,
+			multiple: false,
+			title: "Select Image Folder"
+		});
+		if (selected) {
+			folderPath = selected;
+		}
+	}
+</script>
+</script>
+
+<main class="container">
+  <div class="header">
+    <h1>Vignette Wizard</h1>
+    <p class="subtitle">Image Processor</p>
+  </div>
+
+  <div class="section">
+    <label class="section-label">Image Folder</label>
+    <Input
+      type="text"
+      placeholder="Enter folder path or use button below..."
+      bind:value={folderPath}
+    />
+    <Button variant="primary" onclick={handleChooseFolder}>Choose Folder</Button>
+  </div>
+
+  <div class="settings">
+    <label class="section-label">Settings</label>
+
+    <ControlGroup
+      label="Step interval (process every Nth image):"
+      bind:value={stepInterval}
+      step={1}
+      min={1}
+    />
+
+    <ControlGroup
+      label="Vignette Strength:"
+      bind:value={vignetteStrength}
+      step={0.1}
+      min={0}
+    />
+
+    <ControlGroup
+      label="Radius Divisor (larger = smaller clear zone):"
+      bind:value={radiusDivisor}
+      step={0.1}
+      min={0}
+    />
+
+    <ColorPicker bind:color={vignetteColor} {handleReset} />
+
+    <CheckboxControl
+      id="debug-mode"
+      label="Debug Mode (green vignette + markers)"
+      bind:checked={debugMode}
+    />
+  </div>
+
+  {#if isProcessing}
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: {progress}%"></div>
+      </div>
+      <p class="progress-text">{progressText} ({Math.round(progress)}%)</p>
+    </div>
+  {/if}
+
+  <Button variant="primary" size="large" onclick={handleProcessImages} disabled={isProcessing}>
+    {isProcessing ? "Processing..." : "Process Images"}
+  </Button>
+</main>
+
+<style>
+  .container {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    gap: 12px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0 0 4px 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #1e88e5, #1976d2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200%;
+  }
+
+  .subtitle {
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    color: #999;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1e88e5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+	text-align: center;
+  }
+</style>

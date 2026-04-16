@@ -1,0 +1,25 @@
+﻿<script>
+  import Input from "./Input.svelte";
+
+  export let id = "checkbox";
+  export let label = "";
+  export let checked = false;
+</script>
+
+<div class="checkbox-group">
+  <Input type="checkbox" bind:checked />
+  <label for={id}>{label}</label>
+</div>
+
+<style>
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+  }
+
+  .checkbox-group label {
+    cursor: pointer;
+  }
+</style>

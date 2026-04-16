@@ -1,0 +1,101 @@
+<script>
+  export let variant = "primary"; // "primary" or "secondary"
+  export let size = "medium"; // "small" or "medium" or "large"
+  export let disabled = false;
+  export let onclick;
+</script>
+
+<button class="btn btn-{variant} btn-{size}" {disabled} {onclick}>
+  <slot />
+</button>
+
+<style>
+  .btn {
+    border-radius: 6px;
+    background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(30, 136, 229, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    transition: left 0.3s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+    box-shadow: 0 4px 15px rgba(30, 136, 229, 0.2);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 136, 229, 0.25);
+  }
+
+  .btn-primary:hover:not(:disabled)::before {
+    left: 100%;
+  }
+
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(30, 136, 229, 0.4);
+  }
+
+  .btn-secondary {
+    background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+    padding: 8px 16px;
+    font-size: 13px;
+    box-shadow: 0 4px 12px rgba(30, 136, 229, 0.35);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(30, 136, 229, 0.5);
+  }
+
+  .btn-secondary:hover:not(:disabled)::before {
+    left: 100%;
+  }
+
+  .btn-secondary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(30, 136, 229, 0.35);
+  }
+
+  .btn-small {
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .btn-medium {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .btn-large {
+    padding: 12px 24px;
+    font-size: 15px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+</style>

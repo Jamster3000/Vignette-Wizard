@@ -1,0 +1,61 @@
+﻿<script>
+  export let id = "checkbox";
+  export let label = "";
+  export let checked = false;
+</script>
+
+<div class="checkbox-group">
+  <label class="custom-checkbox">
+    <input type="checkbox" {id} bind:checked />
+    <div class="checkbox-box"></div>
+  </label>
+  <label for={id}>{label}</label>
+</div>
+
+<style>
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  .checkbox-group label {
+    cursor: pointer;
+  }
+
+  .custom-checkbox {
+    display: block;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #1e88e5;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+	margin: 0 auto;
+  }
+
+  .checkbox-box {
+    width: 48px;
+    height: 48px;
+    background-color: #1e88e5;
+    top: -42px;
+    left: -42px;
+    position: absolute;
+    transform: rotateZ(45deg);
+    z-index: 100;
+    transition: 300ms ease;
+  }
+
+  input[type="checkbox"] {
+    position: absolute;
+    left: 50px;
+    visibility: hidden;
+  }
+
+  input[type="checkbox"]:checked + .checkbox-box {
+    left: -6px;
+    top: -6px;
+  }
+</style>

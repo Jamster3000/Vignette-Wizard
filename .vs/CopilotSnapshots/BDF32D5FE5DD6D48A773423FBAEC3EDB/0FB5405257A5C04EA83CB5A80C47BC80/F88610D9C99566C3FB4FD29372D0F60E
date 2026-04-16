@@ -1,0 +1,57 @@
+﻿<script>
+  import Button from "./Button.svelte";
+
+  export let color = "#000000";
+  export let onReset;
+</script>
+
+<div class="control-group">
+  <label>Vignette Color (click to change):</label>
+  <div class="color-row">
+    <label class="color-preview" for="color-input" style="background-color: {color}"></label>
+    <input type="color" id="color-input" bind:value={color} class="hidden-input" />
+    <Button variant="secondary" onclick={onReset}>Reset</Button>
+  </div>
+</div>
+
+<style>
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    width: 100%;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .color-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .color-preview {
+    width: 60px;
+    height: 44px;
+    border-radius: 6px;
+    border: 2px solid #1e88e5;
+    box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: block;
+  }
+
+  .color-preview:hover {
+    box-shadow: 0 6px 16px rgba(30, 136, 229, 0.5);
+    transform: scale(1.05);
+  }
+
+  .hidden-input {
+    display: none;
+  }
+</style>

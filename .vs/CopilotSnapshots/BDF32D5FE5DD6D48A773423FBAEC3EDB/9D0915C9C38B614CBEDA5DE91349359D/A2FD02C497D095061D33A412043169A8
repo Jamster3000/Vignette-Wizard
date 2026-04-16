@@ -1,0 +1,32 @@
+﻿<script>
+  import Button from "./Button.svelte";
+  import Input from "./Input.svelte";
+
+  export let color = "#000000";
+  export let onReset;
+</script>
+
+<div class="control-group">
+  <label>Vignette Color (click to change):</label>
+  <div class="color-row">
+    <Input type="color" bind:value={color} />
+    <Button variant="secondary" onclick={onReset}>Reset</Button>
+  </div>
+</div>
+
+<style>
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .color-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+</style>

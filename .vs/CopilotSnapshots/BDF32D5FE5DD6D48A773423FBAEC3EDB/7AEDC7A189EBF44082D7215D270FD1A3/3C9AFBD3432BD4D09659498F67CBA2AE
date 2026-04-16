@@ -1,0 +1,70 @@
+﻿<script>
+  export let label = "";
+  export let value = 0;
+  export let step = 1;
+  export let min = 0;
+  export let onChange;
+
+  function decrement() {
+    value = Math.max(min, value - step);
+  }
+
+  function increment() {
+    value += step;
+  }
+</script>
+
+<div class="control-group">
+  <label>{label}</label>
+  <div class="control-row">
+    <button class="control-btn minus" onclick={decrement}>−</button>
+    <input type="number" bind:value step={step.toString()} class="value-input" />
+    <button class="control-btn plus" onclick={increment}>+</button>
+  </div>
+</div>
+
+<style>
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .control-group label {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .control-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .control-btn {
+    width: 60px;
+    height: 50px;
+    border-radius: 8px;
+    background-color: #1e88e5;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .control-btn:hover {
+    background-color: #1976d2;
+  }
+
+  .control-btn:active {
+    background-color: #1565c0;
+  }
+
+  .value-input {
+    width: 80px;
+    padding: 10px;
+    text-align: center;
+  }
+</style>

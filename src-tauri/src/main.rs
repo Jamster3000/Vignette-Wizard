@@ -1,0 +1,66 @@
+// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+mod image_processor;
+mod timing;
+
+use std::sync::{Arc, Mutex};
+use tauri::State;
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ProcessingSettings {
+    pub folder_path: String,
+    pub step_interval: u32,
+    pub vignette_strength: f32,
+    pub radius_divisor: f32,
+    pub vignette_color: String,
+    pub debug_mode: bool,
+}
+
+pub struct AppState {
+    processing: Arc<Mutex<bool>>,
+}
+
+#[tauri::command]
+async fn process_images(
+    settings: ProcessingSettings,
+    state: State<'_, AppState>,
+    window: tauri::Window,
+) -> Result<String, String> {
+    {
+        let mut processing = state.processing.lock().unwrap();
+        if *processing {
+            return Err("Already processing images".to_string());
+        }
+        *processing = true;
+    }
+
+    let result = image_processor::process_images(settings, state.processing.clone(), window).await;
+
+    {
+        let mut processing = state.processing.lock().unwrap();
+        *processing = false;
+    }
+
+    result
+}
+
+#[tauri::command]
+fn stop_processing(state: State<'_, AppState>) {
+    let mut processing = state.processing.lock().unwrap();
+    *processing = false;
+}
+
+fn main() {
+    let app_state = AppState {
+        processing: Arc::new(Mutex::new(false)),
+    };
+
+    tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
+        .manage(app_state)
+        .invoke_handler(tauri::generate_handler![process_images, stop_processing])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}

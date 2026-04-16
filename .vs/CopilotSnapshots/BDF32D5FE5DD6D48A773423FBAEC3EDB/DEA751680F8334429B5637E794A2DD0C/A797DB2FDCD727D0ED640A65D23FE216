@@ -1,0 +1,43 @@
+﻿<script>
+  export let type = "text"; // "text", "number", "color", "email", etc.
+  export let placeholder = "";
+  export let value = "";
+  export let step = undefined;
+  export let min = undefined;
+  export let disabled = false;
+</script>
+
+<input
+  {type}
+  {placeholder}
+  bind:value
+  {step}
+  {min}
+  {disabled}
+  class="input"
+/>
+
+<style>
+  .input {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background-color: #444;
+    color: #f6f6f6;
+    font-size: 16px;
+    transition: border-color 0.25s;
+  }
+
+  .input:focus {
+    border-color: #1e88e5;
+  }
+
+  .input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  input[type="number"] {
+    text-align: center;
+  }
+</style>

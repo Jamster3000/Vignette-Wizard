@@ -1,0 +1,53 @@
+﻿<script>
+  export let color = "#000000";
+  export let onReset;
+</script>
+
+<div class="control-group">
+  <label>Vignette Color (click to change):</label>
+  <div class="color-row">
+    <input type="color" bind:value={color} class="color-picker" />
+    <button class="secondary-btn" onclick={onReset}>Reset</button>
+  </div>
+</div>
+
+<style>
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .color-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .color-picker {
+    width: 60px;
+    height: 50px;
+    border-radius: 8px;
+    border: 2px solid #555;
+  }
+
+  .secondary-btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    background-color: #1e88e5;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .secondary-btn:hover {
+    background-color: #1976d2;
+  }
+
+  .secondary-btn:active {
+    background-color: #1565c0;
+  }
+</style>

@@ -1,0 +1,139 @@
+﻿<script>
+  import "../app.css";
+  import ControlGroup from "$lib/ControlGroup.svelte";
+  import ColorPicker from "$lib/ColorPicker.svelte";
+  import CheckboxControl from "$lib/CheckboxControl.svelte";
+  import Button from "$lib/Button.svelte";
+  import Input from "$lib/Input.svelte";
+
+  let folderPath = $state("");
+  let stepInterval = $state(1);
+  let vignetteStrength = $state(2.5);
+  let radiusDivisor = $state(4.0);
+  let vignetteColor = $state("#000000");
+  let debugMode = $state(false);
+
+  function handleChooseFolder() {
+    console.log("Choose folder clicked");
+  }
+
+  function handleProcessImages() {
+    console.log("Process images with settings:", {
+      folderPath,
+      stepInterval,
+      vignetteStrength,
+      radiusDivisor,
+      vignetteColor,
+      debugMode
+    });
+  }
+
+  function handleReset() {
+    vignetteColor = "#000000";
+  }
+</script>
+
+<main class="container">
+  <h1>Please input path to images</h1>
+
+  <div class="section">
+    <Input
+      type="text"
+      placeholder="Enter folder path or use button below..."
+      bind:value={folderPath}
+    />
+    <Button variant="primary" onclick={handleChooseFolder}>Choose Folder</Button>
+  </div>
+
+  <ControlGroup
+    label="Step interval (process every Nth image):"
+    bind:value={stepInterval}
+    step={1}
+    min={1}
+  />
+
+  <ControlGroup
+    label="Vignette Strength:"
+    bind:value={vignetteStrength}
+    step={0.1}
+    min={0}
+  />
+
+  <ControlGroup
+    label="Radius Divisor (larger = smaller clear zone):"
+    bind:value={radiusDivisor}
+    step={0.1}
+    min={0}
+  />
+
+  <ColorPicker bind:color={vignetteColor} {handleReset} />
+
+  <CheckboxControl
+    id="debug-mode"
+    label="Debug Mode (green vignette + markers)"
+    bind:checked={debugMode}
+  />
+
+  <button class="primary-btn large" onclick={handleProcessImages}>Process Images</button>
+</main>
+
+<style>
+  .container {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    gap: 30px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .path-input {
+    padding: 12px 16px;
+    transition: border-color 0.25s;
+  }
+
+  .path-input:focus {
+    border-color: #1e88e5;
+  }
+
+  .primary-btn {
+    padding: 12px 40px;
+    border-radius: 8px;
+    background-color: #1e88e5;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .primary-btn:hover {
+    background-color: #1976d2;
+  }
+
+  .primary-btn:active {
+    background-color: #1565c0;
+  }
+
+  .primary-btn.large {
+    padding: 16px 40px;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+</style>

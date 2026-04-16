@@ -1,0 +1,66 @@
+﻿<script>
+  export let type = "text"; // "text", "number", "color", "email", etc.
+  export let placeholder = "";
+  export let value = "";
+  export let step = undefined;
+  export let min = undefined;
+  export let disabled = false;
+</script>
+
+<input
+  {type}
+  {placeholder}
+  bind:value
+  {step}
+  {min}
+  {disabled}
+  class="input"
+/>
+
+<style>
+  .input {
+    transition: border-color 0.25s;
+  }
+
+  .input:focus {
+    border-color: #1e88e5;
+  }
+
+  .input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  input[type="number"] {
+    text-align: center;
+    width: 70px;
+  }
+
+  input[type="color"] {
+    width: 60px;
+    height: 44px;
+    border: 2px solid #1e88e5;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 2px;
+    background: linear-gradient(135deg, #1e88e5, #1565c0);
+    box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  input[type="color"]:hover {
+    box-shadow: 0 6px 16px rgba(30, 136, 229, 0.5);
+    border-color: #1976d2;
+  }
+
+  input[type="color"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2), 0 6px 16px rgba(30, 136, 229, 0.5);
+  }
+
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+</style>
